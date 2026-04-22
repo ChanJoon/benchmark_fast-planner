@@ -1,35 +1,36 @@
 <launch>
-  <arg name="quad_name" default="air"/>
+  <arg name="quad_name" default="quad_0"/>
+  <arg name="launch_rviz" default="false"/>
+  <arg name="position_cmd_topic" default="/quad_0/planning/pos_cmd"/>
   <!-- size of map, change the size in x, y, z according to your application -->
   <arg name="map_size_x" value="40.0"/>
   <arg name="map_size_y" value="40.0"/>
-  <arg name="map_size_z" value=" 7.0"/>
+  <arg name="map_size_z" value="7.0"/>
 
   <!-- topic of your odometry such as VIO or LIO -->
-  <arg name="odom_topic" value="/$(arg quad_name)/ground_truth/odometry" />
+  <arg name="odom_topic" value="/quad_0/lidar_slam/odom" />
 
-  <arg name="point_num" default="1" />
+  <arg name="point_num" default="2" />
 
-    <!-- -11, -13 -->
-  <arg name="point0_x" default="0" />
-  <arg name="point0_y" default="0" />
-  <arg name="point0_z" default="2.0" />
+  <arg name="point0_x" default="8.0" />
+  <arg name="point0_y" default="0.0" />
+  <arg name="point0_z" default="1.5" />
 
-  <arg name="point1_x" default="0" />
-  <arg name="point1_y" default="0" />
-  <arg name="point1_z" default="2.0" />
+  <arg name="point1_x" default="16.0" />
+  <arg name="point1_y" default="0.0" />
+  <arg name="point1_z" default="1.5" />
 
-  <arg name="point2_x" default="0" />
-  <arg name="point2_y" default="0" />
-  <arg name="point2_z" default="2.0" />
+  <arg name="point2_x" default="16.0" />
+  <arg name="point2_y" default="0.0" />
+  <arg name="point2_z" default="1.5" />
 
-  <arg name="point3_x" default="0" />
-  <arg name="point3_y" default="0" />
-  <arg name="point3_z" default="2.0" />
+  <arg name="point3_x" default="16.0" />
+  <arg name="point3_y" default="0.0" />
+  <arg name="point3_z" default="1.5" />
 
-  <arg name="point4_x" default="0" />
-  <arg name="point4_y" default="0" />
-  <arg name="point4_z" default="2.0" />
+  <arg name="point4_x" default="16.0" />
+  <arg name="point4_y" default="0.0" />
+  <arg name="point4_z" default="1.5" />
 
   <!-- main algorithm params -->
   <include file="$(find plan_manage)/launch/kino_algorithm.xml">
@@ -43,21 +44,21 @@
     <!-- depth topic: depth image, 640x480 by default -->
     <!-- don't set cloud_topic if you already set these ones! -->
     <arg name="camera_pose_topic" value="nopose"/>
-    <arg name="depth_topic" value="/$(arg quad_name)/flight_pilot/depth"/>
+    <arg name="depth_topic" value="nodepth"/>
 
     <!-- topic of point cloud measurement, such as from LIDAR  -->
     <!-- don't set camera pose and depth, if you already set this one! -->
-    <arg name="cloud_topic" value="nocloud"/>
+    <arg name="cloud_topic" value="/quad0_pcl_render_node/cloud"/>
 
     <!-- intrinsic params of the depth camera -->
-    <arg name="cx" value="160"/>
-    <arg name="cy" value="120"/>
-    <arg name="fx" value="160"/>
-    <arg name="fy" value="160"/>
+    <arg name="cx" value="320.0"/>
+    <arg name="cy" value="240.0"/>
+    <arg name="fx" value="320.0"/>
+    <arg name="fy" value="320.0"/>
 
     <!-- maximum velocity and acceleration the drone will reach -->
-    <arg name="max_vel" value="3.0" />
-    <arg name="max_acc" value="6.0" />
+    <arg name="max_vel" value="2.0" />
+    <arg name="max_acc" value="3.0" />
 
     <!-- 1: use 2D Nav Goal to select goal  -->
     <!-- 2: use global waypoints below  -->
@@ -90,7 +91,7 @@
 
   <!-- trajectory server -->
   <node pkg="plan_manage" name="traj_server" type="traj_server" output="screen">
-    <remap from="/position_cmd" to="$(arg quad_name)/autopilot/reference_state"/>
+    <remap from="/position_cmd" to="$(arg position_cmd_topic)"/>
     <remap from="/odom_world" to="$(arg odom_topic)"/>
     <param name="traj_server/time_forward" value="1.0" type="double"/>
   </node>
@@ -102,6 +103,6 @@
     <param name="waypoint_type" value="manual-lonely-waypoint"/>    
   </node>
 
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find plan_manage)/launch/fast.rviz" required="true" />
+  <node if="$(arg launch_rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find plan_manage)/launch/fast.rviz" required="true" />
 
 </launch>
