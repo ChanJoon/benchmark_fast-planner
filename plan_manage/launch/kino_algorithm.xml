@@ -18,6 +18,9 @@
   <arg name="obstacles_inflation" default="0.09"/>
   <arg name="depth_filter_maxdist" default="4.0"/>
   <arg name="max_ray_length" default="4.5"/>
+  <arg name="local_update_range_x" default="5.5"/>
+  <arg name="local_update_range_y" default="5.5"/>
+  <arg name="local_update_range_z" default="4.5"/>
 
   <arg name="point_num"/>
   <arg name="point0_x"/>
@@ -75,9 +78,9 @@
     <param name="sdf_map/map_size_x"   value="$(arg map_size_x_)" /> 
     <param name="sdf_map/map_size_y"   value="$(arg map_size_y_)" /> 
     <param name="sdf_map/map_size_z"   value="$(arg map_size_z_)" /> 
-    <param name="sdf_map/local_update_range_x"  value="5.5" /> 
-    <param name="sdf_map/local_update_range_y"  value="5.5" /> 
-    <param name="sdf_map/local_update_range_z"  value="4.5" /> 
+    <param name="sdf_map/local_update_range_x"  value="$(arg local_update_range_x)" /> 
+    <param name="sdf_map/local_update_range_y"  value="$(arg local_update_range_y)" /> 
+    <param name="sdf_map/local_update_range_z"  value="$(arg local_update_range_z)" /> 
     <param name="sdf_map/obstacles_inflation"     value="$(arg obstacles_inflation)" /> 
     <param name="sdf_map/local_bound_inflate"    value="0.0"/>
     <param name="sdf_map/local_map_margin" value="30"/>
